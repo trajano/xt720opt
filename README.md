@@ -1,13 +1,20 @@
-Please note that this may brick your phone.  In which case you need to reflash it using an SBF.
+= Motorola Milestone XT720 optimization script =
+
+This project provides some scripts and replacement files to optimize the Motorola Milestone XT720.  This was based on the Apps2SD, Link2SD modifications.
+
+Please note that unlike the apps2sd code, this is an ALL OR NOTHING script.  It was meant to do a quick fix in case I made a mistake and had to RSD Lite my phone from scratch again.  Thankfully with OpenRecovery the amount of times I had to do that since was reduced to zero so the install script is not really well tested now.
+
+== Warnings ==
+
+* This is designed primarily for WIND Mobile users of the XT720 [currently only I am the only one I personally know who is insane enough to have one]
+* I have not merged apns-config.xml which only contains WIND with other providers.
+* You must remove Apps2Card or Link2SD.  This is only meant for Apps2SD users or base firmware users only.
+* If you don't have OpenRecovery installed, I don't suggest you do this.
+* Please note that this may brick your phone.  In which case you need to reflash it using an SBF.
 
 Before you use this, install OpenRecovery first.
 
-Root then sh install.sh
-
-This was based on the apps2sd code, but now looks pretty far from it already :)
-
-h1. Purpose and warnings
-Please note that unlike the apps2sd code, this is an ALL OR NOTHING script.  It was meant to do a quick fix in case I made a mistake and had to RSD Lite my phone from scratch again.  Thankfully with OpenRecovery the amount of times I had to do that since was reduced to zero so the install script is not really well tested now.
+== Usage ==
 
 Although this would be running in adb shell mode while the phone is running, I would recommend any setup scripts be run in OpenRecovery mode.  Otherwise you may get weird reboots when you least expect it.
 
