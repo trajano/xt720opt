@@ -5,34 +5,31 @@ BOOT_LOG=/data/boot.log
 
 export PATH=/system/bin:$PATH
 
-MODULES=""
 loadmod() {
+   # Will load a kernel module if it is not loaded already
+   while [ $# -gt 1 ]
+   do
+      loadmod $1
+      if [ ! $? ]
+      then
+         return 1
+      fi
+      shift
+   done
+   
    if lsmod | grep -q "^$1"
    then
       echo "Kernel module $1 loaded" >> $BOOT_LOG
-      MODULES="$MODULES $1"
+      return 0;
    else
-      if insmod /system/lib/modules/$1.ko
+      if insmod /system/lib/modules/$1.ko 2>> $BOOT_LOG
       then
          loadmod $1
+      else
+         return 1;
       fi
    fi
 }
-
-EXTFS=""
-loadmod jbd
-loadmod ext3
-
-if (echo $MODULES | grep 'jbd') && (echo $MODULES | grep 'ext3' )
-then
-   EXTFS=ext3
-else
-   loadmod ext2
-   if echo $MODULES | grep 'ext2'
-   then
-      EXTFS=ext2
-   fi
-fi
 
 relink() {
    # Relinks the directory from one place to another
@@ -200,14 +197,21 @@ relink_data() {
    relink /data/$1 /system/sd/$1
 }
 
-# Check for existence of secondary device
-if [ $EXTFS ] && mount -t $EXTFS -o noatime,nodiratime /dev/block//vold/179:2 /system/sd 2>> $BOOT_LOG
+if (loadmod jbd ext3) && mount -t ext3 -o noatime,nodiratime /dev/block//vold/179:2 /system/sd 2>> $BOOT_LOG
 then
    relink_data app
    relink_data app-private
    relink_data dalvik-cache
    fix_permissions
+elif (loadmod ext2) && mount -t ext2 -o noatime,nodiratime /dev/block//vold/179:2 /system/sd 2>> $BOOT_LOG
+then
+   relink_data app
+   relink_data app-private
+   relink_data dalvik-cache
+   fix_permissions
+   
 fi
+
 mount >> $BOOT_LOG
 
 # Recreate app and app-private folders that are normally put

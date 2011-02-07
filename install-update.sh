@@ -1,6 +1,15 @@
 cd /sdcard/xt720opt
 UPDATED_FILES=""
 
+# sets up backup folders
+BACKUP_DIR=/sdcard/xt720opt.backup/`date +"%Y-%m-%dT%H.%M.%S"`
+busybox mkdir -p $BACKUP_DIR
+die() {
+   # Terminates with an error message
+   echo $1
+   exit 1
+}
+
 cat_cp() {
    dest=`echo "$1" | sed 's/^pkgexec//' | sed 's/^pkg//'`
    if [ \! -e $dest ]
@@ -13,6 +22,9 @@ cat_cp() {
       if [ $src_md5 \!= $dest_md5 ]
       then
          echo "updating $dest"
+         busybox mkdir -p $BACKUP_DIR/$dest
+         rmdir $BACKUP_DIR/$dest
+         cp $dest $BACKUP_DIR/$dest || die "unable to backup to $BACKUP_DIR/$dest"
          cat $1 > $dest
          UPDATED_FILES="$UPDATED_FILES $dest"
       fi
@@ -43,6 +55,12 @@ do
    chmod 755 $file
 done
 # TODO some future updates I may want to delete the files in which case I will put the code here.
+
+# Reinstall busybox if updated
+if echo $UPDATED_FILES | grep /system/xbin/busybox
+then
+   /system/xbin/busybox --install -s /system/xbin/
+fi
 
 # Prevent any file loss at this time
 sync
