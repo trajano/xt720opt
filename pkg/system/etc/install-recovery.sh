@@ -8,10 +8,10 @@ export PATH=/system/bin:$PATH
 EXTFS=""
 if insmod /system/lib/modules/jbd.ko && insmod /system/lib/modules/ext3.ko
 then
-  EXTFS=ext3
+   EXTFS=ext3
 elif insmod /system/lib/modules/ext2.ko
 then
-  EXTFS=ext2
+   EXTFS=ext2
 fi
 
 relink() {
