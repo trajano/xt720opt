@@ -30,6 +30,4 @@ After trying out Link2D and Apps2Card, I decided the best way in terms of stabil
 1. Before you use this, install OpenRecovery first.
 2. Although this would be running in adb shell mode while the phone is running, I would recommend any setup scripts be run in OpenRecovery mode.  Otherwise you may get weird reboots when you least expect it.
 
-## TODO
-
-* I am considering using ext4.ko later, but I haven't read any benefits to using it in the context of XT720 at the moment.
+## [[TODO|doc/TODO]]
