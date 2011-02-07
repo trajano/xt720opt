@@ -19,7 +19,6 @@ set_prop() {
    fi
 }
 
-cd /sdcard/apps2sd
 # Allow write to the FS
 mount -t yaffs2 -o rw,remount /dev/block/mtdblock6 /system
 cp apns-wind-conf.xml /system/etc/apns-conf.xml
