@@ -1,0 +1,12 @@
+PATH=/system/xbin:/sbin:/system/sbin:/system/bin
+export PATH
+
+remount() {
+  mode=$1
+  if [ \! $mode ]
+  then
+    mode='rw'
+  fi
+  mount -t yaffs2 -o $mode,remount /dev/block/mtdblock6 /system
+}
+
