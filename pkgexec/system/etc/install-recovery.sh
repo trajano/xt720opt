@@ -5,11 +5,12 @@ BOOT_LOG=/data/boot.log
 
 export PATH=/system/bin:$PATH
 
+MODULES=""
 loadmod() {
    if lsmod | grep -q "^$1"
    then
       echo "Kernel module $1 loaded" >> $BOOT_LOG
-      MOD_$1_LOADED=1
+      MODULES="$MODULES $1"
    else
       if insmod /system/lib/modules/$1.ko
       then
@@ -22,12 +23,12 @@ EXTFS=""
 loadmod jbd
 loadmod ext3
 
-if [ $MOD_jbd_LOADED ] && [ $MOD_ext3_LOADED ]
+if (echo $MODULES | grep 'jbd') && (echo $MODULES | grep 'ext3' )
 then
    EXTFS=ext3
 else
    loadmod ext2
-   if [ $MOD_ext2_LOADED ]
+   if echo $MODULES | grep 'ext2'
    then
       EXTFS=ext2
    fi
