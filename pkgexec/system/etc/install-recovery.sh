@@ -38,10 +38,16 @@ relink() {
    # Relinks the directory from one place to another
    # $1 = source (usually in internal memory)
    # $2 = target (usually in sd card)
+   # $3 = if specified, then no copy is performed
    if [ -e "$2" ] && [ \! "$1" -ef "$2" ]
    then
       echo "relinking '$1' to '$2'" >> $BOOT_LOG
-      cp -fr "$1"/* "$2"
+      if [ $3 ]
+      then
+         mkdir "$2"
+      else
+         cp -fr "$1"/* "$2"
+      fi
       chmod 777 "$2"
       rm -r "$1"
       ln -s "$2" "$1"
