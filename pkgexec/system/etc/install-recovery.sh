@@ -54,6 +54,19 @@ relink() {
    fi
 }
 
+fix_permissions() {
+      chown system.system /data/app/*.apk 
+chown /data/app-private/*.apk
+
+   # all the APKs in the data are not going to work unless they had no special permissions to begin with.
+   # go through all the installed apps and reapply the permissions but we can put in ALL the permissions.
+   
+   # All possible permissions (except for BRICK)
+   allperms=`grep '^<item .* package=.*' /data/system/packages.xml  | grep -v BRICK | sed 's/ package=".*"//' | tr -d '\n'`
+   cp -f /data/system/packages.xml /data/system/packages.backup.xml
+   sed "s#<perms />#<perms>$allperms</perms>#" /data/system/packages.backup.xml > /data/system/packages.xml
+}
+
 recreate() {
    # $1 = path to recreate
    if [ \! -x "$1" ]
@@ -77,6 +90,7 @@ then
    relink_data app
    relink_data app-private
    relink_data dalvik-cache
+   fix_permissions
 fi
 mount >> $BOOT_LOG
 

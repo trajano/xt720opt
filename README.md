@@ -2,6 +2,8 @@
 
 This project provides some scripts and replacement files to optimize the Motorola Milestone XT720.  This was based on the Apps2SD, Link2SD modifications.
 
+The boot up script is not intended to get your previously installed apps working again, the main purpose of the change was to make sure if you change your SD card you don't have to do a recover.
+
 Please note that unlike the apps2sd code, this is an ALL OR NOTHING script.  It was meant to do a quick fix in case I made a mistake and had to RSD Lite my phone from scratch again.  Thankfully with OpenRecovery the amount of times I had to do that since was reduced to zero so the install script is not really well tested now.
 
 ## Purpose
