@@ -5,8 +5,14 @@ BOOT_LOG=/data/boot.log
 
 export PATH=/system/bin:$PATH
 
-insmod /system/lib/modules/jbd.ko >> $BOOT_LOG
-insmod /system/lib/modules/ext3.ko >> $BOOT_LOG
+EXTFS=""
+if insmod /system/lib/modules/jbd.ko && insmod /system/lib/modules/ext3.ko
+then
+  EXTFS=ext3
+elif insmod /system/lib/modules/ext2.ko
+then
+  EXTFS=ext2
+fi
 
 relink() {
    # Relinks the directory from one place to another
@@ -40,7 +46,7 @@ relink_data() {
 }
 
 # Check for existence of secondary device
-if mount -t ext3 -o noatime,nodiratime /dev/block//vold/179:2 /system/sd 2>> $BOOT_LOG
+if [ $EXTFS ] && mount -t $EXTFS-o noatime,nodiratime /dev/block//vold/179:2 /system/sd 2>> $BOOT_LOG
 then
    relink_data app
    relink_data app-private
