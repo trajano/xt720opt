@@ -6,8 +6,10 @@ Root then sh install.sh
 
 This was based on the apps2sd code, but now looks pretty far from it already :)
 
-h1. Purpose
+h1. Purpose and warnings
 Please note that unlike the apps2sd code, this is an ALL OR NOTHING script.  It was meant to do a quick fix in case I made a mistake and had to RSD Lite my phone from scratch again.  Thankfully with OpenRecovery the amount of times I had to do that since was reduced to zero so the install script is not really well tested now.
+
+Although this would be running in adb shell mode while the phone is running, I would recommend any setup scripts be run in OpenRecovery mode.  Otherwise you may get weird reboots when you least expect it.
 
 h1. Improved bootup script.
 The main problem I had with the Apps2SD code which was fixed with other tools such as Link2SD and App2Card is that removing or changing the SD card may cause the phone to go on a boot loop.  I have since made fixes to prevent that.
