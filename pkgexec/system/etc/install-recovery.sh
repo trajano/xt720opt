@@ -5,13 +5,32 @@ BOOT_LOG=/data/boot.log
 
 export PATH=/system/bin:$PATH
 
+loadmod() {
+   if lsmod | grep -q "^$1"
+   then
+      echo "Kernel module $1 loaded" >> $BOOT_LOG
+      MOD_$1_LOADED=1
+   else
+      if insmod /system/lib/modules/$1.ko
+      then
+         loadmod $1
+      fi
+   fi
+}
+
 EXTFS=""
-if insmod /system/lib/modules/jbd.ko && insmod /system/lib/modules/ext3.ko
+loadmod jbd
+loadmod ext3
+
+if [ $MOD_jbd_LOADED ] && [ $MOD_ext3_LOADED ]
 then
    EXTFS=ext3
-elif insmod /system/lib/modules/ext2.ko
-then
-   EXTFS=ext2
+else
+   loadmod ext2
+   if [ $MOD_ext2_LOADED ]
+   then
+      EXTFS=ext2
+   fi
 fi
 
 relink() {
@@ -46,7 +65,7 @@ relink_data() {
 }
 
 # Check for existence of secondary device
-if [ $EXTFS ] && mount -t $EXTFS-o noatime,nodiratime /dev/block//vold/179:2 /system/sd 2>> $BOOT_LOG
+if [ $EXTFS ] && mount -t $EXTFS -o noatime,nodiratime /dev/block//vold/179:2 /system/sd 2>> $BOOT_LOG
 then
    relink_data app
    relink_data app-private

@@ -13,6 +13,7 @@ cat_cp() {
       if [ $src_md5 \!= $dest_md5 ]
       then
          echo "updating $dest"
+         cat $1 > $dest
          UPDATED_FILES="$UPDATED_FILES $dest"
       fi
    fi
