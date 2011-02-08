@@ -2,6 +2,7 @@
 
 BOOT_LOG=/data/boot.log
 [ -e $BOOT_LOG ] && mv $BOOT_LOG /data/boot_last.log
+echo "Booting" `date` > $BOOT_LOG
 
 export PATH=/system/bin:$PATH
 
@@ -228,4 +229,5 @@ recreate /data/app
 recreate /data/app-private
 recreate /data/dalvik-cache
 
+echo "Finish" `date` >> $BOOT_LOG
 exit 0
