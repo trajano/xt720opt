@@ -59,7 +59,7 @@ do
 done
 
 # Update files that should only be updated in OpenRecovery mode
-if [ $INIT_DIR = "/sdcard/OpenRecovery/init" ]
+if [ "$INIT_DIR" = "/sdcard/OpenRecovery/init" ]
 then
    echo "In Openrecovery mode, updating pkgrecovery files"
    for file in `find pkgrecovery -type f -print`
