@@ -214,6 +214,14 @@ fi
 
 mount >> $BOOT_LOG
 
+# Check the file system here rather than wait for the GUI,
+# though slower to boot to the GUI, it is faster as there is
+# no other GUI to show.
+if [ -e /dev/block//vold/179:1 ]
+then
+   /system/bin/fsck_msdos -y /dev/block//vold/179:1 >> $BOOT_LOG
+fi
+
 # Recreate app and app-private folders that are normally put
 # into secondary storage if the current ones are not working.
 recreate /data/app

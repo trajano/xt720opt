@@ -5,6 +5,8 @@ UPDATED_FILES=""
 BACKUP_DIR=/sdcard/xt720opt.backup/`date +"%Y-%m-%dT%H.%M.%S"`
 busybox mkdir -p $BACKUP_DIR
 
+SYS_PARTITION=`mount | grep "^.* /system " | awk ' { print $1 } '`
+
 die() {
    # Terminates with an error message
    echo $*
@@ -12,26 +14,28 @@ die() {
 }
 
 cat_cp() {
-   dest=`echo "$1" | sed 's#^pkg[^/]/##'`
+   dest=`echo "$1" | sed 's#^pkg[^/]*##'`
    if [ \! -e $dest ]
    then
-      cat $1 > $dest
+      cp -f $1 $dest || die "unable to copy to $dest"
       UPDATED_FILES="$UPDATED_FILES $dest"
    else
       if diff -q $1 $dest
       then
+         true
+      else
          echo "updating $dest"
          busybox mkdir -p $BACKUP_DIR/$dest
          rmdir $BACKUP_DIR/$dest
          cp $dest $BACKUP_DIR/$dest || die "unable to backup to $BACKUP_DIR/$dest"
-         cat $1 > $dest
+         cp -f $1 $dest || die "unable to copy to $dest"
          UPDATED_FILES="$UPDATED_FILES $dest"
       fi
    fi
 }
 
 # Remount system partion as read-write
-mount -t yaffs2 -o rw,remount /dev/block/mtdblock6 /system
+mount -t yaffs2 -o rw,remount $SYS_PARTITION /system
 
 # Remove app2sd or app2card modifications
 if [ -x /system/bin/mot_boot_mode.bin ]
@@ -90,7 +94,7 @@ fi
 sync
 
 # Remount as read-only
-mount -t yaffs2 -o ro,remount /dev/block/mtdblock6 /system
+mount -t yaffs2 -o ro,remount $SYS_PARTITION /system
 
 # If some files are updated, we should reboot the MediaServer if we are running on the phone mode or tell the user to reboot
 # Maybe if I have another JIT update.
