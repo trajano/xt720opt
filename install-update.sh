@@ -1,4 +1,6 @@
 cd /sdcard/xt720opt
+. lib/func.sh
+
 UPDATED_FILES=""
 
 # sets up backup folders
@@ -7,11 +9,6 @@ busybox mkdir -p $BACKUP_DIR
 
 SYS_PARTITION=`mount | grep "^.* /system " | awk ' { print $1 } '`
 
-die() {
-   # Terminates with an error message
-   echo $*
-   exit 1
-}
 
 cat_cp() {
    dest=`echo "$1" | sed 's#^pkg[^/]*##'`

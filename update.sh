@@ -5,6 +5,12 @@ then
    exit 1
 fi
 
+if [ \! `which busybox` ]
+then
+   echo "busybox is not available"
+   exit 1
+fi
+
 if [ \! -e /sdcard/xt720opt.zip ]
 then
    echo "No update file found"
