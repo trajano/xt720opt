@@ -1,3 +1,4 @@
+#!/system/sh
 cd /sdcard/xt720opt
 . lib/func.sh
 
@@ -13,6 +14,11 @@ unpkg() {
    # outputs the path with no pkg prefix
    echo "$1" | sed 's#^pkg[^/]*##'
 }
+backup() {
+    busybox mkdir -p "$BACKUP_DIR/$1"
+    rmdir "$BACKUP_DIR/$1"
+    cp "$dest" "$BACKUP_DIR/$1" || die "unable to backup to $BACKUP_DIR/$dest"
+}
 cat_cp() {
    dest=`unpkg $1`
    if [ \! -e $dest ]
@@ -25,9 +31,7 @@ cat_cp() {
          true
       else
          echo "updating $dest"
-         busybox mkdir -p $BACKUP_DIR/$dest
-         rmdir $BACKUP_DIR/$dest
-         cp $dest $BACKUP_DIR/$dest || die "unable to backup to $BACKUP_DIR/$dest"
+	 backup $dest
          cp -f $1 $dest || die "unable to copy to $dest"
          UPDATED_FILES="$UPDATED_FILES $dest"
       fi
@@ -54,13 +58,13 @@ do_update() {
    
    if [ ! -e pkgdelete/ignore ]
    then
-      for file in `find pkgdelete -type f -print`
+      for file in `find pkgdelete -name "*.md5" -type f -print`
       do
          f=`unpkg $file | sed 's/\.md5$//'`
 	 if [ -e "$f" ]
 	 then 
-	     md5sum "$f" > "/tmp/t.md5"
-	     if diff -aw "/tmp/t.md5" "$file"
+	     md5sum < "$f" > "/tmp/t.md5"
+	     if diff -aqw "/tmp/t.md5" "$file"
 	     then
 		 backup $f
 		 rm $f
