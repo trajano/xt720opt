@@ -5,9 +5,9 @@ UPDATED_FILES=""
 
 # sets up backup folders
 BACKUP_DIR=/sdcard/xt720opt.backup/`date +"%Y-%m-%dT%H.%M.%S"`
-./busybox mkdir -p $BACKUP_DIR
+busybox mkdir -p $BACKUP_DIR
 
-SYS_PARTITION=`mount | ./busybox grep "^.* /system " | ./busybox awk ' { print $1 } '`
+SYS_PARTITION=`mount | busybox grep "^.* /system " | busybox awk ' { print $1 } '`
 
 cat_cp() {
    dest=`echo "$1" | sed 's#^pkg[^/]*##'`
