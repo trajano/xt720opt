@@ -15,24 +15,24 @@ unpkg() {
    echo "$1" | sed 's#^pkg[^/]*##'
 }
 backup() {
-    busybox mkdir -p "$BACKUP_DIR/$1"
-    rmdir "$BACKUP_DIR/$1"
-    cp "$dest" "$BACKUP_DIR/$1" || die "unable to backup to $BACKUP_DIR/$dest"
+   busybox mkdir -p "$BACKUP_DIR/$1"
+   rmdir "$BACKUP_DIR/$1"
+   cp "$1" "$BACKUP_DIR/$1" || die "unable to backup to $BACKUP_DIR/$dest"
 }
 cat_cp() {
    dest=`unpkg $1`
-   if [ \! -e $dest ]
+   if [ \! -e "$dest" ]
    then
-      cp -f $1 $dest || die "unable to copy to $dest"
+      cp -f "$1" "$dest" || die "unable to copy to $dest"
       UPDATED_FILES="$UPDATED_FILES $dest"
    else
-      if diff -q $1 $dest
+      if diff -q $1 "$dest"
       then
          true
       else
          echo "updating $dest"
-	 backup $dest
-         cp -f $1 $dest || die "unable to copy to $dest"
+         backup "$dest"
+         cp -f "$1" "$dest" || die "unable to copy to $dest"
          UPDATED_FILES="$UPDATED_FILES $dest"
       fi
    fi
@@ -43,8 +43,8 @@ do_update() {
    then
       for file in `find pkg -type f -print`
       do
-         cat_cp $file
-         chmod 644 $file
+         cat_cp "$file"
+         chmod 644 "$file"
       done
    fi
    
@@ -52,7 +52,7 @@ do_update() {
    then
       for file in `find pkgprop -type f -print`
       do
-         merge_prop `unpkg $file` $file
+         merge_prop `unpkg $file` "$file"
       done
    fi
    
@@ -61,16 +61,16 @@ do_update() {
       for file in `find pkgdelete -name "*.md5" -type f -print`
       do
          f=`unpkg $file | sed 's/\.md5$//'`
-	 if [ -e "$f" ]
-	 then 
-	     md5sum < "$f" > "/tmp/t.md5"
-	     if diff -aqw "/tmp/t.md5" "$file"
-	     then
-		 backup $f
-		 rm $f
-	     fi
-	     rm "/tmp/t.md5"
-	 fi
+         if [ -e "$f" ]
+         then
+            md5sum < "$f" > "/tmp/t.md5"
+            if diff -aqw "/tmp/t.md5" "$file"
+            then
+               backup "$f"
+               rm $f
+            fi
+            rm "/tmp/t.md5"
+         fi
       done
    fi
    
