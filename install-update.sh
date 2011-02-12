@@ -52,6 +52,24 @@ do_update() {
       done
    fi
    
+   if [ ! -e pkgdelete/ignore ]
+   then
+      for file in `find pkgdelete -type f -print`
+      do
+         f=`unpkg $file | sed 's/\.md5$//'`
+	 if [ -e "$f" ]
+	 then 
+	     md5sum "$f" > "/tmp/t.md5"
+	     if diff -aw "/tmp/t.md5" "$file"
+	     then
+		 backup $f
+		 rm $f
+	     fi
+	     rm "/tmp/t.md5"
+	 fi
+      done
+   fi
+   
    if [ ! -e pkgexec/ignore ]
    then
       for file in `find pkgexec -type f -print`
