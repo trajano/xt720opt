@@ -1,5 +1,11 @@
 #!/system/bin/sh
 
+if [ -e /data/busybox ]
+then
+   # Clean up left over busybox
+   rm /data/busybox
+fi
+
 if which busybox > /dev/null
 then
    true
@@ -21,6 +27,7 @@ else
    chmod 755 /system/xbin/busybox
    /system/xbin/busybox --install -s /system/xbin/
    mount -t yaffs2 -o ro,remount $SYS_PARTITION /system
+   rm /data/busybox
 fi
 
 if [ \! -e ../xt720opt.zip ]
