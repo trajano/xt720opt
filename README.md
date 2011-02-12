@@ -1,5 +1,7 @@
 # Motorola Milestone XT720 optimization script
 
+This one is specifically for the use with Dexter's 1.2a Froyo mod for the XT720.  At the moment, the only it does is ensure that busybox is set up properly in /system/xbin after a Nandroid restore.
+
 This project provides some scripts and replacement files to optimize the Motorola Milestone XT720.  This was based on the Apps2SD, Link2SD modifications.
 
 The boot up script is not intended to get your previously installed apps working again, the main purpose of the change was to make sure if you change your SD card you don't have to do a recover.
