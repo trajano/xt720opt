@@ -10,7 +10,7 @@ busybox mkdir -p $BACKUP_DIR
 SYS_PARTITION=`mount | busybox grep "^.* /system " | busybox awk ' { print $1 } '`
 
 unpkg() {
-    # outputs the path with no pkg prefix
+   # outputs the path with no pkg prefix
    echo "$1" | sed 's#^pkg[^/]*##'
 }
 cat_cp() {
@@ -35,35 +35,53 @@ cat_cp() {
 }
 
 do_update() {
-   for file in `find pkg -type f -print`
-   do
-      cat_cp $file
-      chmod 644 $file
-   done
-   for file in `find pkgprop -type f -print`
-   do
-       merge_prop `unpkg $file` $file
-   done
-   for file in `find pkgexec -type f -print`
-   do
-      cat_cp $file
-      chmod 755 $file
-   done
+   if [ ! -e pkg/ignore ]
+   then
+      for file in `find pkg -type f -print`
+      do
+         cat_cp $file
+         chmod 644 $file
+      done
+   fi
+   
+   if [ ! -e pkgprop/ignore ]
+   then
+      for file in `find pkgprop -type f -print`
+      do
+         merge_prop `unpkg $file` $file
+      done
+   fi
+   
+   if [ ! -e pkgexec/ignore ]
+   then
+      for file in `find pkgexec -type f -print`
+      do
+         cat_cp $file
+         chmod 755 $file
+      done
+   fi
    
    # Update files that should only be updated in OpenRecovery mode
    if [ "$INIT_DIR" = "/sdcard/OpenRecovery/init" ]
    then
       echo "In Openrecovery mode, updating pkgrecovery files"
-      for file in `find pkgrecovery -type f -print`
-      do
-         cat_cp $file
-         chmod 644 $file
-      done
-      for file in `find pkgrecoveryexec -type f -print`
-      do
-         cat_cp $file
-         chmod 755 $file
-      done
+      if [ ! -e pkgrecovery/ignore ]
+      then
+         for file in `find pkgrecovery -type f -print`
+         do
+            cat_cp $file
+            chmod 644 $file
+         done
+      fi
+      
+      if [ ! -e pkgrecoveryexec/ignore ]
+      then
+         for file in `find pkgrecoveryexec -type f -print`
+         do
+            cat_cp $file
+            chmod 755 $file
+         done
+      fi
    fi
    
    # TODO some future updates I may want to delete the files in which case I will put the code here.
@@ -86,6 +104,7 @@ do_update() {
 # Remount system partion as read-write
 mount -t yaffs2 -o rw,remount $SYS_PARTITION /system
 
+do_update
 # Remove app2sd or app2card modifications
 if [ -x /system/bin/mot_boot_mode.bin ]
 then

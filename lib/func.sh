@@ -29,5 +29,5 @@ merge_prop() {
     # Merges the properties in a given prop file with another prop file.
     # $1 = prop file to update
     # $2 = prop file to read the latest values from
-    eval `grep -v '^#' $2 | grep -v "^[[:space:]]*$" | sed 's/^\([^=]*\)=\(.*\)$/set_prop "'$1'" "\1" "\2" ; /' `
+    eval `grep -v '^#' $2 | grep -v "^[[:space:]]*$" | sed 's#^\([^=]*\)=\(.*\)$#set_prop "'$1'" "\1" "\2" ; #' `
 }

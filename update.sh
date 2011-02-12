@@ -27,7 +27,7 @@ else
    chmod 755 /system/xbin/busybox
    /system/xbin/busybox --install -s /system/xbin/
    mount -t yaffs2 -o ro,remount $SYS_PARTITION /system
-   rm /tmp/busybox
+   x   rm /tmp/busybox
 fi
 
 if [ \! -e ../xt720opt.zip ]
