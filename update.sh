@@ -1,11 +1,5 @@
 #!/system/bin/sh
 
-if [ -e /data/busybox ]
-then
-   # Clean up left over busybox
-   rm /data/busybox
-fi
-
 if which busybox > /dev/null
 then
    true
@@ -17,17 +11,23 @@ else
       echo "'busybox' was not found, update aborted."
       exit 1
    fi
-   cp busybox /data/busybox
+   if cp busybox /tmp/busybox
+   then
+      true
+   else
+      echo "unable to copy busybox to /tmp possibly not enough space"
+      exit 1
+   fi
    chmod 755 /data/busybox
    
    # Find the system partition
-   SYS_PARTITION=`mount | /data/busybox grep "^.* /system " | /data/busybox awk ' { print $1 } '`
+   SYS_PARTITION=`mount | /tmp/busybox grep "^.* /system " | /tmp/busybox awk ' { print $1 } '`
    mount -t yaffs2 -o rw,remount $SYS_PARTITION /system
    cp busybox /system/xbin
    chmod 755 /system/xbin/busybox
    /system/xbin/busybox --install -s /system/xbin/
    mount -t yaffs2 -o ro,remount $SYS_PARTITION /system
-   rm /data/busybox
+   rm /tmp/busybox
 fi
 
 if [ \! -e ../xt720opt.zip ]
