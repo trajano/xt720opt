@@ -1,7 +1,5 @@
 # Motorola Milestone XT720 optimization script
 
-This one is specifically for the use with Dexter's 1.2a Froyo mod for the XT720.  
-
 # Purpose
 
 * Install busybox in /system/xbin after a Nandroid restore.
