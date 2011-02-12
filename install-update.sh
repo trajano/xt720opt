@@ -9,8 +9,12 @@ busybox mkdir -p $BACKUP_DIR
 
 SYS_PARTITION=`mount | busybox grep "^.* /system " | busybox awk ' { print $1 } '`
 
+unpkg() {
+    # outputs the path with no pkg prefix
+   echo "$1" | sed 's#^pkg[^/]*##'
+}
 cat_cp() {
-   dest=`echo "$1" | sed 's#^pkg[^/]*##'`
+   dest=`unpkg $1`
    if [ \! -e $dest ]
    then
       cp -f $1 $dest || die "unable to copy to $dest"
@@ -35,6 +39,10 @@ do_update() {
    do
       cat_cp $file
       chmod 644 $file
+   done
+   for file in `find pkgprop -type f -print`
+   do
+       merge_prop `unpkg $file` $file
    done
    for file in `find pkgexec -type f -print`
    do

@@ -1,6 +1,11 @@
 # Motorola Milestone XT720 optimization script
 
-This one is specifically for the use with Dexter's 1.2a Froyo mod for the XT720.  At the moment, the only it does is ensure that busybox is set up properly in /system/xbin after a Nandroid restore.
+This one is specifically for the use with Dexter's 1.2a Froyo mod for the XT720.  
+
+# Purpose
+
+* Install busybox in /system/xbin after a Nandroid restore.
+* Set up some properties in /data/local.prop to improve performance and get Gingerbread keyboard (http://forum.xda-developers.com/showthread.php?t=875202) working correctly
 
 This project provides some scripts and replacement files to optimize the Motorola Milestone XT720.  This was based on the Apps2SD, Link2SD modifications.
 
@@ -33,5 +38,6 @@ After trying out Link2D and Apps2Card, I decided the best way in terms of stabil
 ## Usage 
 1. Before you use this, install OpenRecovery first.
 2. Although this would be running in adb shell mode while the phone is running, I would recommend any setup scripts be run in OpenRecovery mode.  Otherwise you may get weird reboots when you least expect it.
+3. Run 'update.sh' this will set everything up for you.
 
 ## [[TODO]]

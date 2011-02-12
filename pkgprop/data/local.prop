@@ -1,0 +1,6 @@
+# Increase Home Application priority
+ro.HOME_APP_ADJ=1
+
+# Set the LCD Density so Gingerbread keyboard will render properly without SetRes
+qemu.sf.lcd_density=240
+
