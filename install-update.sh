@@ -63,11 +63,13 @@ do_update() {
          f=`unpkg $file | sed 's/\.md5$//'`
          if [ -e "$f" ]
          then
-            md5sum < "$f" > "/tmp/t.md5"
+            cat "$f" | md5sum | awk '{ print $1 }' > /tmp/t.md5
             if diff -aqw "/tmp/t.md5" "$file"
             then
                backup "$f"
                rm $f
+            else
+               cat /tmp/t.md5
             fi
             rm "/tmp/t.md5"
          fi
@@ -130,7 +132,7 @@ do_update
 # Remove app2sd or app2card modifications
 if [ -x /system/bin/mot_boot_mode.bin ]
 then
-   MOT_BOOT_MODE_MD5=`md5sum < /system/bin/mot_boot_mode.bin`
+   MOT_BOOT_MODE_MD5=`cat /system/bin/mot_boot_mode.bin | md5sum | awk '{ print $1 }'`
    if [ $MOT_BOOT_MODE_MD5 = "79a0b50bfca7b2edb08024732c905d93" ]
    then
       mv /system/bin/mot_boot_mode.bin /system/bin/mot_boot_mode
