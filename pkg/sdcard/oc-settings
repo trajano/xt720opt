@@ -1,0 +1,4 @@
+#!/system/bin/sh
+
+echo 56 > /proc/overclock/max_vsel
+echo 1000000 > /proc/overclock/max_rate
