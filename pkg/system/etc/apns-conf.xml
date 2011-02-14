@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?> 
-<!-- use empty string to specify no proxy or port -->
-<!-- This version must agree with that in apps/common/res/apns.xml -->
-<apns version='6'>
-    <apn carrier="Wind CA" mcc="302" mnc="490" apn="internet.windmobile.ca" user="" password="" server="" mmsproxy="" mmsport="" mmsc="" type="default,supl"/>
-  <apn carrier="Wind CA MMS" mcc="302" mnc="490" apn="mms.windmobile.ca" user="" password="" server="" mmsproxy="74.115.197.70" mmsport="8080" mmsc="http://mms.windmobile.ca" type="mms"/>
-  </apns>
