@@ -39,6 +39,7 @@ module BeautifyBash
       in_here_doc = false
       defer_ext_quote = false
       in_ext_quote = false
+      was_in_here_doc = false
       ext_quote_string = ""
       here_string = ""
       output = []
@@ -48,6 +49,7 @@ module BeautifyBash
          if(in_here_doc)
             if(stripped_record =~ %r{#{here_string}})
                in_here_doc = false
+               was_in_here_doc = true
             end
          else # not in here_doc
             if(stripped_record =~ %r{<<-?})
@@ -58,6 +60,9 @@ module BeautifyBash
          end
          if(in_here_doc) # pass unchanged
             output << record
+         elsif (was_in_here_doc)
+            output << record
+            was_in_here_doc = false
          else # not in here_doc
             test_record = stripped_record.gsub(/\\./,"")
             # collapse multiple quotes between ' ... '
