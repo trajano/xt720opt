@@ -129,15 +129,17 @@ do_update() {
 mount -t yaffs2 -o rw,remount $SYS_PARTITION /system
 
 do_update
+
 # Remove app2sd or app2card modifications
-if [ -x /system/bin/mot_boot_mode.bin ]
-then
-   MOT_BOOT_MODE_MD5=`cat /system/bin/mot_boot_mode.bin | md5sum | awk '{ print $1 }'`
-   if [ $MOT_BOOT_MODE_MD5 = "79a0b50bfca7b2edb08024732c905d93" ]
-   then
-      mv /system/bin/mot_boot_mode.bin /system/bin/mot_boot_mode
-   fi
-fi
+# This is not done in Dexter's froyo as his mod changes mot_boot_mode
+#if [ -x /system/bin/mot_boot_mode.bin ]
+#then
+#   MOT_BOOT_MODE_MD5=`cat /system/bin/mot_boot_mode.bin | md5sum | awk '{ print $1 }'`
+#   if [ $MOT_BOOT_MODE_MD5 = "79a0b50bfca7b2edb08024732c905d93" ]
+#   then
+#      mv /system/bin/mot_boot_mode.bin /system/bin/mot_boot_mode
+#   fi
+#fi
 
 # Prevent any file loss at this time
 sync
