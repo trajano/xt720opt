@@ -11,33 +11,33 @@ fi
 if [ -e /sdcard/adb_bootup ] ; then
    [[ -e /sdcard/sdcard_bootup ]] && /system/xbin/busybox echo /dev/block/mmcblk0p1 >/sys/devices/platform/usb_mass_storage/lun0/file
    /system/xbin/busybox echo msc_adb >/dev/usb_device_mode
-	 /sbin/adbd &
-  /system/xbin/busybox echo 255 >/sys/class/leds/blue/brightness
-  /system/xbin/busybox sleep 10
-  /system/xbin/busybox echo 0 >/sys/class/leds/blue/brightness
+   /sbin/adbd &
+   /system/xbin/busybox echo 255 >/sys/class/leds/blue/brightness
+   /system/xbin/busybox sleep 10
+   /system/xbin/busybox echo 0 >/sys/class/leds/blue/brightness
 fi
 if [ -e /data/.recovery_mode ] ; then
    rm /data/.recovery_mode ; sync
    umount /sdcard
    mount -orw,remount /
-	 mkdir /tmp
+   mkdir /tmp
    mount tmpfs /tmp
    chmod -R 777 /tmp
-	 mkdir /cache
-	 mount /dev/block/cache /cache
-	 chmod -R 777 /cache
+   mkdir /cache
+   mount /dev/block/cache /cache
+   chmod -R 777 /cache
    mkdir -p /sd-ext
    rm /cache/recovery/command
    rm /cache/update.zip
-   touch /tmp/.ignorebootmessage 
+   touch /tmp/.ignorebootmessage
    cd /sbin
-   ln -s /sbin/busybox [
-   ln -s /sbin/busybox [[
+   ln -s /sbin/busybox "["
+   ln -s /sbin/busybox "[["
    ln -s /sbin/recovery amend
    ln -s /sbin/busybox ash
    ln -s /sbin/busybox awk
    ln -s /sbin/busybox basename
-	 ln -s /sbin/busybox bbconfig
+   ln -s /sbin/busybox bbconfig
    ln -s /sbin/busybox bunzip2
    ln -s /sbin/recovery busybox
    ln -s /sbin/busybox bzcat
@@ -186,15 +186,15 @@ if [ -e /data/.recovery_mode ] ; then
    ln -s /sbin/busybox yes
    ln -s /sbin/busybox zcat
    cd /
-	 umount /system/lw
-	 umount /system/lw
+   umount /system/lw
+   umount /system/lw
    /sbin/recovery &
    /system/xbin/busybox sleep 50000
 fi
 umount /sdcard
-	mount -orw,remount /
-	rm /sdcard
-	rmdir /sdcard
-	ln -s /mnt/sdcard /sdcard
-	mount -oro,remount /
+mount -orw,remount /
+rm /sdcard
+rmdir /sdcard
+ln -s /mnt/sdcard /sdcard
+mount -oro,remount /
 /system/bin/mot_boot_mode.bin

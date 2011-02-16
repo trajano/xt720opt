@@ -6,5 +6,6 @@ dist : format Makefile update.sh install-update.sh
 
 format :
 	tools/sh_b.rb update.sh
-	tools/sh_b.rb install-update.sh
+	tools/sh_b.rb pkgexec/system/bin/mot_boot_mode
 	tools/sh_b.rb pkgexec/system/etc/install-recovery.sh
+	tools/sh_b.rb install-update.sh
