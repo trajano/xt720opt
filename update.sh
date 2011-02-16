@@ -1,6 +1,6 @@
 #!/system/bin/sh
 
-if which busybox > /dev/null
+if which busybox &> /dev/null
 then
    true
 else
@@ -47,4 +47,6 @@ else
    exit 1
 fi
 
-sh -x install-update.sh
+. ./install-update.sh
+
+
