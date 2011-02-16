@@ -1,4 +1,6 @@
 #!/system/bin/sh
+# Don't do anything for now
+exit
 
 BOOT_LOG=/data/boot.log
 [ -e $BOOT_LOG ] && mv $BOOT_LOG /data/boot_last.log
