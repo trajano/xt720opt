@@ -1,4 +1,4 @@
-#!/system/sh
+#!/system/sh -x
 cd /sdcard/xt720opt
 . lib/func.sh
 

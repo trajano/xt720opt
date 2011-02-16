@@ -47,4 +47,4 @@ else
    exit 1
 fi
 
-sh install-update.sh
+sh -x install-update.sh
